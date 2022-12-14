@@ -2,7 +2,7 @@ import { SchemaToTsBuilder } from '@hexlabs/json-schema-to-ts';
 import axios from 'axios';
 import { mkdirSync, writeFileSync } from 'fs';
 import prettier from 'prettier';
-import { Printer } from '../../typescript-generator';
+import { Printer } from '@hexlabs/typescript-generator';
 
 (async () => {
   const result = await axios.get('http://json-schema.org/draft-07/schema#');
