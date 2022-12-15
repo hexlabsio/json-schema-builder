@@ -88,6 +88,6 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "@hexlabs/json-schema-to-ts": "^1.1.2"
+    "@hexlabs/json-schema-to-ts": "^1.1.4"
   }
 }
