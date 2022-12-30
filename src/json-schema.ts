@@ -1,5 +1,5 @@
-import { JSONSchema7, JSONSchema7Builder } from 'generated/json-schema.org/draft-07/JSONSchema7';
-import { Schema } from 'generated/json-schema.org/draft-07/Schema';
+import { JSONSchema7, JSONSchema7Builder } from '../generated/json-schema.org/draft-07/JSONSchema7';
+import { Schema } from '../generated/json-schema.org/draft-07/Schema';
 
 export class Schemas<K extends string | null = null> {
 
@@ -31,8 +31,8 @@ type ObjectProps = Pick<JSONSchema7, keyof CommonProps | 'additionalProperties' 
 type ArrayProps = Pick<JSONSchema7, keyof CommonProps | 'additionalItems' | 'items' | 'minItems' | 'maxItems' | 'uniqueItems'>
 type NumberProps = Pick<JSONSchema7, keyof CommonProps | 'minimum' | 'maximum' | 'exclusiveMinimum' | 'exclusiveMaximum'>
 type IntegerProps = Pick<JSONSchema7, keyof CommonProps | 'minimum' | 'maximum' | 'exclusiveMinimum' | 'exclusiveMaximum'>
-type BooleanProps = Pick<JSONSchema7, keyof CommonProps> & { type: 'boolean' }
-type NullProps = Pick<JSONSchema7, keyof CommonProps> & { type: 'null' }
+type BooleanProps = Pick<JSONSchema7, keyof CommonProps>
+type NullProps = Pick<JSONSchema7, keyof CommonProps>
 type RefProps = Pick<JSONSchema7, '$ref'>
 
 export class S<K extends string = string> {
@@ -100,11 +100,11 @@ export class S<K extends string = string> {
     return { type: 'array', ...props };
   }
 
-  object(props?: { title?: string; required?: Record<string, Schema>, optional?: Record<string, Schema> } & ObjectProps): JSONSchema7 {
+  object(props?: { title?: string; required?: Record<string, Schema>, optional?: Record<string, Schema> } & Omit<ObjectProps, 'required' | 'properties'>): JSONSchema7 {
     return S.object(props ? {...props, title: props.title ?? this.name } : { title: this.name });
   }
 
-  static object(props?: { title?: string; required?: Record<string, Schema>, optional?: Record<string, Schema> } & ObjectProps): JSONSchema7 {
+  static object(props?: { title?: string; required?: Record<string, Schema>, optional?: Record<string, Schema> } & Omit<ObjectProps, 'required' | 'properties'>): JSONSchema7 {
     if(!props) return { type: 'object' };
     const {title, required, optional, ...rest} = props
     return {
@@ -112,7 +112,8 @@ export class S<K extends string = string> {
       ...(title ? { title: title } : {} ),
       ...(required ? { required: Object.keys(required) } : {}),
       properties: { ...required, ...optional },
-      ...rest
+      ...rest,
+      additionalProperties : rest.additionalProperties ?? false
     };
   }
 
