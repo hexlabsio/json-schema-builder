@@ -1,4 +1,5 @@
-import { JSONSchema7, JSONSchema7Builder } from '../generated/json-schema.org/draft-07/JSONSchema7';
+import { JSONSchema7 } from '../generated/json-schema.org/draft-07/JSONSchema7';
+import { JSONSchema7Builder } from '../generated/json-schema.org/draft-07/builders/JSONSchema7';
 import { Schema } from '../generated/json-schema.org/draft-07/Schema';
 
 export class Schemas<K extends string | null = null> {
@@ -38,6 +39,30 @@ type RefProps = Pick<JSONSchema7, '$ref'>
 export class S<K extends string = string> {
 
   constructor(private location: string, private name?: string) {
+  }
+
+  anyOf(...schemas: Schema[]): Schema {
+    return S.anyOf(...schemas);
+  }
+
+  oneOf(...schemas: Schema[]): Schema {
+    return S.oneOf(...schemas);
+  }
+
+  allOf(...schemas: Schema[]): Schema {
+    return S.allOf(...schemas);
+  }
+
+  static anyOf(...schemas: Schema[]): Schema {
+    return { anyOf: schemas };
+  }
+
+  static oneOf(...schemas: Schema[]): Schema {
+    return { oneOf: schemas };
+  }
+
+  static allOf(...schemas: Schema[]): Schema {
+    return { allOf: schemas };
   }
 
   ref(name: K extends null ? string : K): RefProps {

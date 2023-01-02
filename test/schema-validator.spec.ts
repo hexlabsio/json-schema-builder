@@ -211,5 +211,18 @@ describe('Schema Validator', () => {
       const schema = S.object({ required: { a: S.object({optional: { b: S.string({ default: 'xyz'})}}) }});
       expectValid(schema, {a: { }}, { a: { b: 'xyz' }});
     });
+
+    it('should map pattern properties', () => {
+      const schema = S.object({
+        patternProperties: { '^x-[a-z]+$': { type: 'number' } }
+      });
+      expectInvalidReasons(schema, {a: '123', b : 123},
+        {schemaLocation: '#/additionalProperties', valuePath: '#', reason: 'Should have no additional properties, found [a,b]'}
+      );
+      expectInvalidReasons(schema, {'x-abc': 'xyz'},
+        {schemaLocation: '#/patternProperties/^x-[a-z]+$', valuePath: '#/x-abc', reason: 'Value should have been a number but was of type string'}
+      );
+      expectValid(schema, {'x-abc': 123}, {'x-abc': 123});
+    });
   })
 })

@@ -114,7 +114,7 @@ export class SchemaValidator {
     const valueKeys = Object.keys(value!);
     return Object.keys(schema.patternProperties ?? {})
       .reduce((prev, patternProperty) =>
-        valueKeys.reduce((prev2, property) => {
+        valueKeys.filter(it => !!it.match(patternProperty)).reduce((prev2, property) => {
           const propertyValue = value[property];
           const validation =  SchemaValidator.validate(schema.patternProperties![patternProperty], propertyValue, `${schemaLocation}/patternProperties/${patternProperty}`, `${valuePath}/${property}`);
           return { object: {...prev.object, [property]: validation.isValid ? validation.result : undefined}, invalidations: validation.isValid ? prev.invalidations : [...prev.invalidations, ...validation.result] }
