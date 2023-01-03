@@ -54,22 +54,11 @@
     }
   },
   "jest": {
-    "transform": {
-      ".(ts)": "ts-jest"
-    },
-    "reporters": [
-      "default",
-      "jest-junit"
-    ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ]
+    "preset": "ts-jest"
   },
   "homepage": "",
   "devDependencies": {
-    "@hexlabs/json-schema-to-ts": "^1.1.12",
+    "@hexlabs/json-schema-to-ts": "^1.1.18",
     "@types/jest": "^29.0.3",
     "@types/node": "^16.18.8",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
